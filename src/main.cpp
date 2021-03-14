@@ -30,12 +30,9 @@ struct Tensor
   template <int r, int d, typename U>
   friend std::ostream& operator<<(std::ostream& os, const Tensor<r, d, U>& t);
 
-  T& by_indices(const std::array<size_t, rank> indices)
+  size_t convert_index(const std::array<size_t, rank> indices)
   {
-    if constexpr (rank == 0)
-    {
-      return m_data[0];
-    }
+    if constexpr (rank == 0) { return 0; }
     else
     {
       size_t idx = 0;
@@ -43,13 +40,27 @@ struct Tensor
       {
         idx += (indices[i-1] - 1) * std::pow(dim, rank - i);
       }
-      return m_data[idx];
+      return idx;
     }
+  }
+
+  T& i(const std::array<size_t, rank> indices)
+  {
+    return m_data[convert_index(indices)];
+  };
+  
+  const T& c_i(const std::array<size_t, rank> indices)
+  {
+    return m_data[convert_index(indices)];
   };
 
-  //auto operator*(const Tensor<rank-1, dim, T>& other)
-  //{
-  //}
+  auto operator*(const Tensor<rank-1, dim, T>& other)
+  {
+    Tensor<rank-1, dim, T> result;
+    // TODO Iterator that can give i, j, k like a zipper 
+    //
+    return result;
+  }
   
 };
 
