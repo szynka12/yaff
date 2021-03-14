@@ -1,3 +1,10 @@
+# Build stuff
+Release
+Debug
+bin
+lib
+compile_commands.json
+
 # Prerequisites
 *.d
 
